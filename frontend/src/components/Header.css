@@ -1,5 +1,32 @@
 @import "tailwindcss";
 
-.active {
-    border-bottom: 2px solid black;
+/* a.active hr {
+     display: block;
+} */
+
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  /* left: 0; */
+  bottom: -2.5px;
+  width: 130%;
+  height: 2px;
+  background-color: #374151;
+
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: center;
+}
+
+.nav-link.active::after {
+  transform: scaleX(1);
 }
