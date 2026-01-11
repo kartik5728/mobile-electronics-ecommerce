@@ -1,4 +1,5 @@
 import Footer from "./Footer";
 import Header from "./Header";
+import MobileNav from "./MobileNav";
 
-export { Header, Footer }
+export { Header, Footer, MobileNav }
