@@ -1,5 +1,7 @@
-import Footer from "./Footer";
-import Header from "./Header";
-import MobileNav from "./MobileNav";
+import Header from "./Header.jsx";
+import Footer from "./Footer.jsx";
+import MobileNav from "./MobileNav.jsx";
+import BannerSection from "./BannerSection.jsx";
 
-export { Header, Footer, MobileNav }
+
+export { Header, Footer, MobileNav, BannerSection };

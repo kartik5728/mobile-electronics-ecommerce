@@ -1,0 +1,13 @@
+
+.banner-1-container {
+    overflow: hidden;
+}
+
+.banner-img-1 {
+    object-fit: cover;
+    transition: transform 1s ease;
+}
+
+.banner-1-container:hover .banner-img-1  {
+    transform: scale(1.1);
+}

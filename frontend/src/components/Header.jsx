@@ -98,7 +98,7 @@ const Header = () => {
           </NavLink>
 
           <NavLink to={"/about"} className="flex flex-col items-center gap-1 nav-link py-1">
-            <p>Accesories</p>
+            <p>Accessories</p>
             {/* <hr className='w-[120%] border-none h-0.5 bg-gray-700 absolute top-12.5 hidden'/> */}
           </NavLink>
 

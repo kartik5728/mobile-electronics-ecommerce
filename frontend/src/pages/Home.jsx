@@ -1,9 +1,9 @@
-
+import { BannerSection } from './../components/exports'
 
 const Home = () => {
   return (
     <div>
-      Home
+      <BannerSection />
     </div>
   )
 }
