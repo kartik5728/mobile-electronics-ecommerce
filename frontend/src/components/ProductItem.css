@@ -1,0 +1,5 @@
+
+.product-component:hover .product-overlay {
+    display: flex;
+    flex-direction: column;
+}

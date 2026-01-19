@@ -1,9 +1,10 @@
-import { BannerSection } from './../components/exports'
+import { BannerSection, BestSeller } from './../components/exports'
 
 const Home = () => {
   return (
     <div>
       <BannerSection />
+      <BestSeller />
     </div>
   )
 }

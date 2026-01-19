@@ -2,5 +2,7 @@ import About from "./About";
 import Home from "./Home";
 import Login from "./Login";
 import Contact from "./Contact";
+import Product from "./Product";
+import Cart from "./Cart";
 
-export { About, Home, Login, Contact }
+export { About, Home, Login, Contact, Product, Cart }

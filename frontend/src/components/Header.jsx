@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { frontend_assets } from "./../assets/images/exports"
 import { NavLink, Link, useLocation } from "react-router-dom"
-import { MobileNav } from './exports'
+import { MobileNav, CartHomeComponent } from './exports'
 import { HomeIcon, ShopIcon, CartIcon, WishlistIcon, ProfileIcon, SalePercentIcon, MobileMenuIcon, SearchIcon } from "./../components/icons/exports"
 import "./Header.css"
 
@@ -9,10 +9,13 @@ const Header = () => {
 
   const [currentPageLocation, setCurrentPageLocation] = useState("");
   const path = useLocation().pathname.slice(1);
+  const [showTab, setShowTab] = useState("");
   useEffect(() => {
     // console.log(path);
     setCurrentPageLocation(path);
   }, [path]);
+
+
 
   return (
     <div className="min-h-full flex flex-col relative">
@@ -61,10 +64,13 @@ const Header = () => {
 
         {/* Cart Icon */}
 
-        <div className="relative cursor-pointer">
+        <div onClick={() => setShowTab("cart")} className="relative cursor-pointer">
       <span className="absolute flex items-center justify-center
                bottom-4 left-4 h-5.5 w-5.5 rounded-[50%] bg-yellow-400 text-[10px] text-black font-bold">9+</span>
     <CartIcon width={28} height={28} initial={"text-gray-600 hover:text-yellow-400"}/>
+        <div className={`absolute ${showTab === "cart" ? "block" : "hidden"} bg-red-200`}>
+          <CartHomeComponent />
+        </div>
         </div>
         {/* End of cart icon */}
 
