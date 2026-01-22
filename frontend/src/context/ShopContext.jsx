@@ -12,27 +12,27 @@ const ShopContextProvider = (props) => {
     const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState({});
 
-    const addToCart = (itemId, size) => {
-        if (!size) {
-            console.error('Select Product Size');
+    const addToCart = (itemId, quantity) => {
+        if (!quantity) {
+            console.error('Select Product Quantity');
             return;
         }
 
         let cartData = structuredClone(cartItems);
 
         if (cartData[itemId]) {
-            if (cartData[itemId][size]) {
-                cartData[itemId][size] += 1;
+            if (cartData[itemId][quantity]) {
+                cartData[itemId][quantity] += 1;
             } else {
-                cartData[itemId][size] = 1;
+                cartData[itemId][quantity] = 1;
             }
         } else {
             cartData[itemId] = {};
-            cartData[itemId][size] = 1;
+            cartData[itemId][quantity] = 1;
         }
 
         setCartItems(cartData);
-        console.log(cartData);
+        // console.log(cartData);
     }
 
 
@@ -42,7 +42,7 @@ const ShopContextProvider = (props) => {
     }, [])
 
     const value = {
-        products, currency, delivery_fee, addToCart
+        products, currency, delivery_fee, addToCart, cartItems
     }
     
     return (

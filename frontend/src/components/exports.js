@@ -5,9 +5,10 @@ import BannerSection from "./BannerSection.jsx";
 import BestSeller from "./Bestseller.jsx";
 import ProductItem from "./ProductItem.jsx";
 import Title from "./Title.jsx";
-import CartHomeComponent from "./CartHomeComponent.jsx";
+import CartDesktopComponent from "./CartDesktopComponent.jsx";
+import CartMobileComponent from "./CartMobileComponent.jsx";
 
 
 export { Header, Footer, MobileNav, BannerSection, BestSeller, ProductItem
-    , Title, CartHomeComponent
+    , Title, CartDesktopComponent, CartMobileComponent
  };
