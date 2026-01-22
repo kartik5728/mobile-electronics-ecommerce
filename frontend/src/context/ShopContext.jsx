@@ -32,7 +32,35 @@ const ShopContextProvider = (props) => {
         }
 
         setCartItems(cartData);
-        // console.log(cartData);
+        console.log("Cart Data: ", cartData);
+    }
+
+    const subtractFromCart = (itemId, quantity) => {
+        if (!quantity) {
+            console.error('Select Product Quantity');
+            return;
+        }
+
+        let cartData = structuredClone(cartItems);
+
+        if (cartData[itemId]) {
+            if (cartData[itemId][quantity] == 1 || cartData[itemId][quantity] == 0) {
+                removeFromCart(itemId);
+            } else {
+                cartData[itemId][quantity] -= 1;
+                setCartItems(cartData)
+            }
+        }
+
+    }
+
+    const removeFromCart = (itemId) => {
+        let cartData = structuredClone(cartItems);
+        delete cartData[itemId];
+        setCartItems(cartData);
+        console.log(itemId, " Deleted Successfully");
+        console.log("Updated Cart Data: ", cartData);
+        
     }
 
 
@@ -42,7 +70,7 @@ const ShopContextProvider = (props) => {
     }, [])
 
     const value = {
-        products, currency, delivery_fee, addToCart, cartItems
+        products, currency, delivery_fee, addToCart, cartItems, removeFromCart, subtractFromCart
     }
     
     return (

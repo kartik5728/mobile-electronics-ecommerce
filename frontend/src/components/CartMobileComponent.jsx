@@ -3,7 +3,7 @@ import { ShopContext } from '../context/ShopContext';
 import  { DeleteIcon } from './icons/exports'
 
 const CartMobileComponent = () => {
-  const { products, cartItems, currency } = useContext(ShopContext);
+  const { products, cartItems, currency, removeFromCart, addToCart, subtractFromCart } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
   const [length, setLength] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
@@ -31,9 +31,10 @@ const CartMobileComponent = () => {
     <div className='bg-white rounded-2xl'>
     {
       (length > 0) ? (
-        <div className='relative px-3 py-6'>
+        <div className='flex h-full flex-col px-3 py-6'>
       <div>Your Cart</div>
       {/* Main Products Section (Scrollable) */}
+      <div className='h-[80vh]'>
       <div className='flex flex-col gap-6 max-h-[80vh] overflow-y-auto'>
         {
           cartData.map((item, index) => {
@@ -50,9 +51,9 @@ const CartMobileComponent = () => {
                   </p>
                   <div className='flex flex-col gap-3 items-center'>
                     <p className='flex flex-row font-semibold gap-2 bg-white rounded-lg px-3 py-2 border border-gray-300'>
-                    <span className='hover:text-amber-400 cursor-pointer'>-</span>
+                    <span onClick={() => subtractFromCart(item._id, "quantity")} className='hover:text-amber-400 cursor-pointer'>-</span>
                     <input type="text" className='w-8 text-center text-sm' value={item.quantity} readOnly />
-                    <span onClick={() => item.quantity === 0 ? item.quantity = 1 : item.quantity += 1} className='hover:text-amber-400 cursor-pointer'>+</span>
+                    <span onClick={() => addToCart(item._id, "quantity")} className='hover:text-amber-400 cursor-pointer'>+</span>
                     </p>
                     <p className='text-red-600 text-lg'>
                       {currency}{productData.price}.00
@@ -60,7 +61,7 @@ const CartMobileComponent = () => {
                   </div>
                 </div>
                 <div className='flex-1 flex justify-center items-center '>
-                  <span className='text-gray-500 hover:text-red-500 cursor-pointer'>
+                  <span onClick={() => removeFromCart(item._id)} className='text-gray-500 hover:text-red-500 cursor-pointer'>
                     <DeleteIcon />
                   </span>
                 </div>
@@ -70,6 +71,7 @@ const CartMobileComponent = () => {
             )
           })
         }
+      </div>
       </div>
       {/* Cart Footer */}
       <div className='flex flex-col gap-2'>
