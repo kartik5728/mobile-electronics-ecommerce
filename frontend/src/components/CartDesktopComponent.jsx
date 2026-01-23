@@ -3,7 +3,7 @@ import { ShopContext } from '../context/ShopContext'
 import { DeleteIcon } from './icons/exports'
 
 const CartDesktopComponent = () => {
-  const { products, cartItems, currency, removeFromCart, addToCart, subtractFromCart } = useContext(ShopContext);
+  const { products, cartItems, currency, removeFromCart, addToCart, subtractFromCart, getCartCount } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
   const [length, setLength] = useState(0);
 

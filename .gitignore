@@ -1,5 +1,7 @@
 # Node.js dependencies and runtime files
 node_modules/
+test-backend/
+test2-aws-s3/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

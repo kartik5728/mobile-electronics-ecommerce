@@ -63,6 +63,22 @@ const ShopContextProvider = (props) => {
         
     }
 
+    const getCartCount = () => {
+        let totalCount = 0;
+        for(const items in cartItems) {
+            for(const item in cartItems[items]) {
+                try {
+                    if(cartItems[items][item] > 0) {
+                        totalCount += cartItems[items][item];
+                    }
+                } catch (error) {
+                    
+                }
+            }
+        }
+        return totalCount;
+    }
+
 
 
     useEffect(() => {
@@ -70,7 +86,7 @@ const ShopContextProvider = (props) => {
     }, [])
 
     const value = {
-        products, currency, delivery_fee, addToCart, cartItems, removeFromCart, subtractFromCart
+        products, currency, delivery_fee, addToCart, cartItems, removeFromCart, subtractFromCart, getCartCount
     }
     
     return (

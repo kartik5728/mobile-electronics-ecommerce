@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { MainLayout } from './layouts/exports'
-import { Home, About, Login, Contact, Product, Cart } from './pages/exports'
+import { Home, About, Login, Contact, Product, Cart, Shop } from './pages/exports'
 
 const App = () => {
   return (
@@ -15,6 +15,7 @@ const App = () => {
             <Route path='/contact' element={<Contact />} />
             <Route path='/cart' element={<Cart />}/>
             <Route path='/product/:productId' element={<Product />} />
+            <Route path='/shop' element={<Shop />}/>
         </Route>
 
         {/* Pages without header and footer */}

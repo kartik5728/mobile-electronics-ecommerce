@@ -15,7 +15,7 @@ const Header = () => {
     // console.log(path);
     setCurrentPageLocation(path);
   }, [path]);
-  const { currency, cartItems } = useContext(ShopContext);
+  const { currency, cartItems, getCartCount } = useContext(ShopContext);
 
 
 
@@ -69,7 +69,7 @@ const Header = () => {
           <div className="relative cursor-pointer">
             <div onClick={() => setShowTab("cart-desktop")}>
               <span className="absolute flex items-center justify-center
-               bottom-4 left-4 h-5.5 w-5.5 rounded-[50%] bg-yellow-400 text-[10px] text-black font-bold">9+</span>
+               bottom-4 left-4 h-5.5 w-5.5 rounded-[50%] bg-yellow-400 text-[10px] text-black font-bold">{getCartCount() > 12 ? "12+" : getCartCount()}</span>
               <CartIcon width={28} height={28} initial={"text-gray-600 hover:text-yellow-400"} />
             </div>
 
@@ -95,8 +95,8 @@ const Header = () => {
             {/* <hr className='w-[120%] border-none h-0.5 bg-gray-700 absolute top-12.5 hidden'/> */}
           </NavLink>
 
-          <NavLink to={"/about"} className="flex flex-col items-center gap-1 nav-link py-1">
-            <p>Collections</p>
+          <NavLink to={"/shop"} className="flex flex-col items-center gap-1 nav-link py-1">
+            <p>Shop</p>
             {/* <hr className='w-[120%] border-none h-0.5 bg-gray-700 absolute top-12.5 hidden'/> */}
           </NavLink>
 
@@ -161,7 +161,7 @@ const Header = () => {
         <NavLink onClick={() => setShowTab("cart-mobile")} className="mobile-link flex flex-1 items-center justify-center">
           <div className={`relative flex flex-col items-center justify-center ${path === "contact" ? "text-blue-950" : ""}`}>
             <span className="absolute flex items-center justify-center bottom-7 left-4 h-5.5 w-5.5 rounded-[50%] bg-yellow-400 text-[10px] text-black font-bold">
-              9+</span>
+              {getCartCount() > 12 ? "12+" : getCartCount()}</span>
             <CartIcon width={20} height={20} />
             <span className="text-sm font-verdana">Cart</span>
           </div></NavLink>
