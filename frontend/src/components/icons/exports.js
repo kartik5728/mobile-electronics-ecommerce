@@ -13,7 +13,11 @@ import WishlistPlusIcon from "./WishListPlusIcon";
 import EyeIcon from "./EyeIcon";
 import CompareIcon from "./CompareIcon";
 import DeleteIcon from "./DeleteIcon";
+import GridIcon from "./GridIcon";
+import ListIcon from "./ListIcon";
+import FilterIcon from "./FilterIcon";
 
 export { HomeIcon, ShopIcon, CartIcon, WishlistIcon, ProfileIcon, SalePercentIcon, MobileMenuIcon, SearchIcon,
-        StarIcon, Rating, CartPlusIcon, WishlistPlusIcon, EyeIcon, CompareIcon, DeleteIcon
+        StarIcon, Rating, CartPlusIcon, WishlistPlusIcon, EyeIcon, CompareIcon, DeleteIcon, GridIcon, ListIcon,
+        FilterIcon
  }

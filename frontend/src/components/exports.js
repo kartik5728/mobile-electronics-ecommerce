@@ -7,8 +7,11 @@ import ProductItem from "./ProductItem.jsx";
 import Title from "./Title.jsx";
 import CartDesktopComponent from "./CartDesktopComponent.jsx";
 import CartMobileComponent from "./CartMobileComponent.jsx";
+import ShopProductsGridLayout from "./ShopProductsGridLayout.jsx"
+import ShopProductsListLayout from "./ShopProductsListLayout.jsx";
 
 
 export { Header, Footer, MobileNav, BannerSection, BestSeller, ProductItem
-    , Title, CartDesktopComponent, CartMobileComponent
+    , Title, CartDesktopComponent, CartMobileComponent, ShopProductsGridLayout, 
+    ShopProductsListLayout
  };
