@@ -1,0 +1,15 @@
+.form1-input {
+    outline: none;
+    border: 1px solid rgb(197, 194, 194);
+    border-radius: 5px;
+    padding: 5px 6px;
+}
+
+
+.form1-input:focus {
+    border: 2px solid #635bff;
+}
+
+.form1-input:focus + .form1-label {
+  color: #635bff;
+}
