@@ -21,11 +21,15 @@ s3Router.post('/get-presigned-url', async (req, res) => {
     })
 
     res.json({
+        success: true,
         url: url,
         finalName: finalName
     })
     } catch (error) {
-        console.log("error in awsS3Route (generating presigned url): ", error);
+        console.log("error in aws S3Route (generating presigned url): ", error);
+        res.json({
+            success: false
+        })
     }
 })
 

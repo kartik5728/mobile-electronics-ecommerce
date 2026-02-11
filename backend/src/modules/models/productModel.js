@@ -4,7 +4,8 @@ const productSchema = new mongoose.Schema({
 
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     image:{ 
         type: [String], required: true
@@ -62,5 +63,5 @@ const productSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const productModel = mongoose.models.product || mongoose.model("product", productSchema);
-export default productModel;
+const ProductModel = mongoose.models.product || mongoose.model("Product", productSchema);
+export default ProductModel;

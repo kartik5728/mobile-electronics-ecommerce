@@ -1,57 +1,63 @@
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
 import { DeleteIcon } from "./icons/exports";
 
-export default function SpecsForm({ productSpecs={} }) {
+export default function SpecsForm({ onSpecsArrayChange }) {
   const [productKey, setProductKey] = useState("");
   const [productValue, setProductValue] = useState("");
-  const [specs, setSpecs] = useState([{ 
-    id: Date.now(),
-    key: "",
-    value: ""
-  }]);
+  const [specs, setSpecs] = useState([['', '']]);
 
   const addSpec = (e) => {
     e.preventDefault();
-    // setProductKey(productKey);
-    // setProductValue(productValue);
-    const tempKey = productKey;
-    const tempValue = productValue;
-    setSpecs([...specs, { id: Date.now(), key: tempKey, value: tempValue }]);
-    setProductKey("");
-    setProductValue("");
+    let tempSpecs = structuredClone(specs);
+    tempSpecs = [...tempSpecs, ['', '']];
+    // console.log(tempSpecs);
+    setSpecs(tempSpecs);
   };
 
+  useEffect(() => {
+    // console.log("Specs changed:", specs);
+    onSpecsArrayChange(specs)
+  }, [specs]);
+
   const removeSpec = (id) => {
-    if(specs.length > 1) {
-        setSpecs(specs.filter(spec => spec.id !== id));
-    }
+    setSpecs(prev => prev.filter((item, index) => (index !== id)));
   };
 
   return (
     <div>
       {/* Parent element */}
       <div className="flex flex-col gap-2">
-        {specs.map(spec => (
-          <div key={spec.id} className="flex flex-row gap-2">
+        {specs.map((spec, index) => (
+          <div key={index} className="flex flex-row gap-2">
             <input
-              onChange={(e) => setProductKey(e.target.value)}
-              value={productKey}
-              className="form1-input w-32 sm:w-[50%]"
-              type="text"
-              placeholder="key"
-              required
+              
+              value={spec[0]}
+        className="form1-input w-32 sm:w-[50%]"
+        type="text"
+        placeholder="key"
+        required
+        onChange={(e) => {
+          const newSpecs = [...specs];
+          newSpecs[index][0] = e.target.value;
+          setSpecs(newSpecs);
+        }}
             />
             <input
-              onChange={(e) => setProductValue(e.target.value)}
-              value={productValue}
-              className="form1-input w-32 sm:w-[50%]"
-              type="text"
-              placeholder="value"
-              required
+              
+              value={spec[1]}
+        className="form1-input w-32 sm:w-[50%]"
+        type="text"
+        placeholder="key"
+        required
+        onChange={(e) => {
+          const newSpecs = [...specs];
+          newSpecs[index][1] = e.target.value;
+          setSpecs(newSpecs);
+        }}
             />
             <button
               type="button"
-              onClick={() => removeSpec(spec.id)}
+              onClick={() => removeSpec(index)}
               className="px-2 cursor-pointer lg:px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded-lg"
             >
               <DeleteIcon size={12} />

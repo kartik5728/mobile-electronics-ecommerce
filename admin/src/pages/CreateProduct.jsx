@@ -1,8 +1,10 @@
 import React, { use, useState } from 'react'
+import axios from 'axios'
 import "./CreateProduct.css"
 import { DeleteIcon } from './../components/icons/exports'
 import { SpecsForm, ToggleSwitch } from './../components/exports'
 import { upload_icon } from '../assets/images/exports'
+import { backendURL } from '../App'
 
 
 
@@ -17,22 +19,137 @@ const CreateProduct = () => {
   
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
-  const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Smartphone");
   const [stock, setStock] = useState("");
+  const [price, setPrice] = useState("");
   const [discount, setDiscount] = useState("");
   const [tags, setTags] = useState("");
   const [specialTags, setSpecialTags] = useState("");
+  const [description, setDescription] = useState("");
   const [bestseller, setBestseller] = useState(false);
-  const [specs, setSpecs] = useState({});
+  const [specsArray, setSpecsArray] = useState([]);
+
+  const handleImageUpload = async (images) => {
+    if(!images?.length) 
+      return [];
+
+    const uploadSingleImage = async (file, index) => {
+        try {
+        console.log("UPLOADING: ", index, file.name);
+
+      if(!(file.type.startsWith("image/"))) {
+        throw new Error(`File ${index} is not an image`);
+      }
+
+      // get mime
+      const mime = file.type.split('/')[1];
+
+      const response = await axios.post(
+        `${backendURL}/api/v1/s3/get-presigned-url`, //passing url
+        {
+          mime            //passing object
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json' //passing headers
+          }
+        }
+      );
+
+      if(!response.data?.success) {
+        throw new Error("Error in generating presigned url");
+      }
+
+      // upload image to s3 bucket via presigned url
+      const res = await axios.put(
+        response.data.url, //passing url
+        file, //passing file to upload
+        {
+          headers: {
+            'Content-Type': file.type //passing headers
+          }
+        }
+      );
+
+      if (res.status === 200) {
+        console.log(`Image ${index} uploaded successfully. \n............................`);
+        return response.data.finalName;
+      } else {
+        throw new Error(`Error in uploading image ${1}. \n..............................`);
+      }
+
+    } catch (error) {
+     console.log(error.message);
+     return null;
+   }
+    };
+
+    // Upload all at once
+    const results = await Promise.all(
+      images.map((file, index) => uploadSingleImage(file, index))
+    );
+    console.log("final image urls: ", results);
   
-
-
+    return results.filter(image => image !== null);
+};
   
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    alert("e.preventDefault()");
+    const image = [image1, image2, image3, image4].filter(image => image !== false || image !== undefined);
+    try {
+      const imagesURL = await handleImageUpload(image);
+      if(!imagesURL.length) {
+        alert("upload at least one image");
+        return;
+      }
+      // const formData = new FormData();
+      // formData.append("name", name);
+      // formData.append("image", JSON.stringify(imagesURL));
+      // formData.append("brand", brand);
+      // formData.append("category", category);
+      // formData.append("stock", stock);
+      // formData.append("price", price);
+      // formData.append("discount", discount);
+      // formData.append("tags", JSON.stringify(tags.split(",")));
+      // formData.append("specialTags", JSON.stringify(specialTags.split(",")));
+      // formData.append("description", description);
+      // formData.append("bestseller", String(bestseller));
+      // formData.append("specs", JSON.stringify(specsArray.reduce((accumulator, currentPair) => {
+      //   currentPair[0].trim() && currentPair[1].trim() && (accumulator[currentPair[0]] = currentPair[1]);
+      //   return accumulator;
+      // }, {})));
+
+      //  console.log([...formData.entries()]);
+      const productData = {
+        name,
+        image: JSON.stringify(imagesURL),
+        brand,
+        category,
+        stock,
+        price,
+        discount,
+        tags: JSON.stringify(tags.split(",")),
+        specialTags: JSON.stringify(specialTags.split(",")),
+        description,
+        bestseller,
+        specs: JSON.stringify(specsArray.reduce((accumulator, currentPair) => {
+          currentPair[0].trim() && currentPair[1].trim() && (accumulator[currentPair[0]] = currentPair[1]);
+          return accumulator;
+        }, {}))
+      };
+
+      console.log(productData);
+       const response = await axios.post(
+        `${backendURL}/api/v1/products/add`,  //url
+          productData,   //object body 
+          {}   //headers
+       );
+
+       console.log(response);
+    } catch (error) {
+      console.log(error);
+    } 
   }
 
   return (
@@ -46,11 +163,13 @@ const CreateProduct = () => {
           <div className='flex justify-center flex-col lg:flex-row gap-4 lg:gap-3'>
           <div className='flex flex-1 flex-col-reverse col'>
             <input onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+            value={name} onChange={(e) => setName(e.target.value)}
              className='form1-input' type="text" id='name' required/>
           <label className={`form1-label`} htmlFor="name">Product Name</label>
           </div>
           <div className='flex flex-1 flex-col-reverse'>
             <input onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+            value={brand} onChange={(e) => setBrand(e.target.value)}
              className='form1-input' type="text" id='brand' required/>
           <label className={`form1-label`} htmlFor="brand">Brand</label>
           </div>
@@ -59,6 +178,7 @@ const CreateProduct = () => {
           <div className='flex justify-center flex-col lg:flex-row gap-4 lg:gap-3'>
           <div className='flex flex-1 flex-col-reverse col'>
             <select className='form1-input px-5' onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+            value={category} onChange={(e) => setCategory(e.target.value)}
              name="Select a Category" id="category" required>
               <option value="Smartphone">Smartphone</option>
               <option value="Tablet">Tablet</option>
@@ -71,6 +191,7 @@ const CreateProduct = () => {
           </div>
           <div className='flex flex-1 flex-col-reverse'>
             <input onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+            value={stock} onChange={(e) => setStock(e.target.value)}
              className='form1-input' type="number" id='stock' required/>
           <label className={`form1-label`} htmlFor="stock">Stock</label>
           </div>
@@ -79,11 +200,13 @@ const CreateProduct = () => {
           <div className='flex justify-center flex-col lg:flex-row gap-4 lg:gap-3'>
           <div className='flex flex-1 flex-col-reverse col'>
             <input onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+            value={price} onChange={(e) => setPrice(e.target.value)}
              className='form1-input' type="number" id='price' required/>
           <label className={`form1-label`} htmlFor="price">Price</label>
           </div>
           <div className='flex flex-1 flex-col-reverse'>
             <input onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+            value={discount} onChange={(e) => setDiscount(e.target.value)}
              className='form1-input' type="number" id='discount' required/>
           <label className={`form1-label`} htmlFor="discount">Discount (in %)</label>
           </div>
@@ -92,11 +215,13 @@ const CreateProduct = () => {
           <div className='flex justify-center flex-col lg:flex-row gap-4 lg:gap-3'>
           <div className='flex flex-1 flex-col-reverse col'>
             <input onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+            value={tags} onChange={(e) => setTags(e.target.value)}
              className='form1-input' type="text" id='tags' required/>
           <label className={`form1-label`} htmlFor="tags">Tags (Seperated by ,) max 7 </label>
           </div>
           <div className='flex flex-1 flex-col-reverse col'>
             <input onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+             value={specialTags} onChange={(e) => setSpecialTags(e.target.value)}
              className='form1-input' type="text" id='specialTags' required/>
           <label className={`form1-label`} htmlFor="specialTags">Special Tags (Seperated by ,) max 2 </label>
           </div>
@@ -105,6 +230,7 @@ const CreateProduct = () => {
           <div className='flex justify-center flex-col lg:flex-row gap-4 lg:gap-3'>
           <div className='flex flex-1 flex-col-reverse col'>
             <textarea onFocus={() => setForm1ElementFocused(true)} onBlur={() => setForm1ElementFocused(false)}
+             value={description} onChange={(e) => setDescription(e.target.value)}
              className='form1-input' rows={5} type="number" id='description' required/>
           <label className={`form1-label`} htmlFor="description">Description</label>
           </div>
@@ -126,7 +252,7 @@ const CreateProduct = () => {
           <div className=' w-full flex justify-center md:justify-start gap-4 lg:gap-3'>
             <div className='flex lg:w-[60%] flex-col md:px-5 px-2 py-3 border border-gray-300 rounded-xl'>
               <label className={`form1-label`} htmlFor="description">Product Specs</label>
-                <SpecsForm productSpecs={{}} />
+                <SpecsForm onSpecsArrayChange={setSpecsArray}/>
             </div>
           </div>
 

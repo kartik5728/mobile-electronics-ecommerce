@@ -1,3 +1,4 @@
 import DeleteIcon from "./DeleteIcon";
-
-export { DeleteIcon }
+import ViewIcon from "./ViewIcon";
+import EditIcon from "./EditIcon";
+export { DeleteIcon, ViewIcon, EditIcon }
